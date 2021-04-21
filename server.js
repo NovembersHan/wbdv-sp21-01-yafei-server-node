@@ -13,14 +13,15 @@ app.use(session({
     // cookie: { secure: true }
 }))
 
+require('dotenv').config();
 const mongoose = require('mongoose');
 mongoose.connect(
-    'mongodb://localhost:27017/whiteboard',
+    process.env.MONGODB_URL,
     {useNewUrlParser: true, useUnifiedTopology: true});
 
 // Configures CORS
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers',
         'Content-Type, X-Requested-With, Origin');
     res.header('Access-Control-Allow-Methods',
@@ -41,4 +42,4 @@ require('./controllers/question-controller')(app)
 require('./controllers/quiz-attempts-controller')(app)
 require('./controllers/users-controller')(app)
 
-app.listen(4000)
+app.listen(process.env.PORT || 4000)
